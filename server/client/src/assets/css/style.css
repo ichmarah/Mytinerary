@@ -1,0 +1,28 @@
+.browse-btn {
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.browse-cities {
+  padding-top: 20%;
+}
+
+.home-icon {
+    width: 20%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logo {
+    height: auto;
+    max-width: 100%;
+}
+
+.container {
+  padding-top: 10%;
+}
+
+.build-itinerary {
+  padding-top: 20%;
+}
