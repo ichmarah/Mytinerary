@@ -11,3 +11,4 @@ class Cities extends Component {
 }
 
 export default Cities;
+
