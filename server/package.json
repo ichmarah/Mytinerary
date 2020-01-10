@@ -1,17 +1,17 @@
 {
   "name": "mytinerary",
   "version": "1.0.0",
-  "description": "",
+  "description": "Build PWA that provides access to different itineraries and activities for users wanting to discover or share experiences in a city.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"nodemon server.js\" \"cd ../client && npm start\""
+    "start": "concurrently \"nodemon server.js\" \"cd ./client && npm start\""
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ichmarah/MYtinerary.git"
   },
-  "author": "",
+  "author": "Ichmarah Kock",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ichmarah/server/issues"
