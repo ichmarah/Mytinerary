@@ -1,14 +1,24 @@
-import React, { Component } from 'react';
+const express = require('express');
 
-class Cities extends Component {
-    render() {
-        return (
-            <div>
-                <h1>hiiii</h1>
-            </div>
-        );
-    }
-}
+const router = express.Router();
 
-export default Cities;
+// router.get('/test', (req, res) => {
+// });
 
+// res.send({ msg: 'Cities test route.' })
+
+// })
+// module.exports = router;
+
+const cityModel = require('../model/cityModel')
+
+/*get all cities*/
+router.get('/all', (req, res) => {
+    cityModel.find({})
+        .then(files => {
+            res.send(files)
+        })
+        .catch(err => console.log(err));
+});
+
+module.exports = router;

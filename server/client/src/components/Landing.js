@@ -25,7 +25,10 @@ class Landing extends Component {
                   cities.</p>
                 <p>Start browsing</p>
                 <Media>
-                  <img className="browse-btn" src={ CircleRight2 } alt="Browse cities button" fluid="true" />
+                  <Link to="/cities">
+                    <img className="browse-btn" src={ CircleRight2 } alt="Browse cities button" fluid="true" />
+                  </Link>
+                  
                 </Media>
               </div>
 
