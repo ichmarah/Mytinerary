@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import {
   Card,
   Container, 
-  InputGroup,
-  FormControl, 
-  Button
+  // InputGroup,
+  // FormControl, 
+  // Button
  } from 'react-bootstrap';
-  // import Filter from './Filter';
+  import Filter from './Filter';
 
 //inline component styling:
 //<Container style ={containerStyle}></Container>
@@ -20,7 +20,7 @@ class Cities extends Component {
     this.state = {
       cities: [],          
       loading: true,
-      filterCities: ""
+      filteredCities: []
     }
   }
 
@@ -33,42 +33,45 @@ class Cities extends Component {
         this.setState({
           cities: data,
           loading: false,
-          filterCities: this.state.cities
+          filteredCities: data
         })
+
+        console.log(data);
+        
       })
       .catch(error => console.log(error))
   }
 
-  handleChange = (event) => {
+  // handleChange = (event) => {
+  //   this.setState({
+  //     filterCities: event.target.value
+  //   })
+  // }
+
+  filterCities = (filteredCities) => {
     this.setState({
-      filterCities: event.target.value
+      filteredCities: filteredCities
     })
   }
 
   render() {
     const {loading} = this.state;
-    const {filteredCities} = this.state.cities.filter(
-      (city) => {
-        return  city.name.indexOf(this.state.filterCities) !== -1;
-      }
-    );
+    // const filteredCities = cities.filter(
+    //   (city) => {
+    //     return  city.name.indexOf(this.props.filterCities) !== -1;
+    //   });
     if (loading) {
       return( <Container>Loading cities...</Container>)
     } 
 
+    
+
     return (
       <Container style ={containerStyle}>
-        <div>
-          <h4>Explore cities of the world:</h4>
-          <InputGroup className="mb-3">
-            <FormControl placeholder="Type a city or country..."
-              aria-describedby="basic-addon2" value={this.filterCities} onChange={ this.handleChange } />
-            <InputGroup.Append>
-              <Button variant="outline-secondary">Search</Button>
-            </InputGroup.Append>
-          </InputGroup>
-        </div> 
-        {filteredCities.map((city) => {
+       
+        <Filter onFilterCities={this.filterCities} cities={this.state.cities}/>
+        
+        {this.state.filteredCities.map((city) => {
           return(
             <Card key={city._id} style={{ width: '20rem' }}>
               <Card.Img variant="top" src={city.img} alt={`${city.name}, ${city.country}`} />
