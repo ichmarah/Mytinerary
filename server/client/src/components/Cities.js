@@ -1,4 +1,14 @@
 import React, { Component } from 'react';
+import {
+  Card,
+  Container
+ } from 'react-bootstrap';
+
+//inline component styling:
+//<Container style ={containerStyle}></Container>
+ const containerStyle = {
+  'color': 'red'
+}
 
 class Cities extends Component {
   constructor(props) {
@@ -10,40 +20,43 @@ class Cities extends Component {
   }
 
   async componentDidMount() {
-    await fetch('./cities/all', {
+    await fetch('/cities/all', {
       method: "GET"
     })
-      .then(response => {console.log(response)}
-        // response.json)
-      // .then(json => {
-      //   console.log(json)
-      // }
-        // this.setState({
-        // cities: json,
-        // loading: false
-      // })
-      )
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          cities: data,
+          loading: false
+        })
+      })
       .catch(error => console.log(error))
   }
   
 
+ 
     
   render() {
     const {cities, loading} = this.state;
     if (loading) {
-      return( <div>Loading...</div>)
+      return( <Container>Loading...</Container>)
     } 
     return (
-      <div>
+      <Container style ={containerStyle}>
         {cities.map(city => {
           return(
-            <div key={city._id}>
-              <h4>{city.name}, {city.country}</h4>
-              <img src={city.url} alt={`${city.name} + ', ' + ${city.country}`} />
-            </div>
+            <Card key={city._id} style={{ width: '18rem' }}>
+              <Card.Img variant="top" src={city.img} alt={`${city.name}, ${city.country}`} />
+              <Card.Body>
+                <Card.Title>{city.name}, {city.country}</Card.Title>
+                <Card.Text>
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum cumque eum ex aliquam, beatae esse temporibus qui. Quam, magnam corporis? Fuga at reprehenderit reiciendis maiores et quisquam quasi molestiae neque.
+                </Card.Text>
+              </Card.Body>
+            </Card>
           ) 
         })}
-      </div>   
+      </Container>   
     );
   }
 }
