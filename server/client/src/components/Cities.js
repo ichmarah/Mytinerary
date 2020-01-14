@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import {
   Card,
-  Container
+  Container, 
+  InputGroup,
+  FormControl, 
+  Button
  } from 'react-bootstrap';
+  // import Filter from './Filter';
 
 //inline component styling:
 //<Container style ={containerStyle}></Container>
@@ -15,7 +19,8 @@ class Cities extends Component {
     super(props);
     this.state = {
       cities: [],          
-      loading: true
+      loading: true,
+      filterCities: ""
     }
   }
 
@@ -27,33 +32,55 @@ class Cities extends Component {
       .then(data => {
         this.setState({
           cities: data,
-          loading: false
+          loading: false,
+          filterCities: this.state.cities
         })
       })
       .catch(error => console.log(error))
   }
-  
 
- 
-    
+  handleChange = (event) => {
+    this.setState({
+      filterCities: event.target.value
+    })
+  }
+
   render() {
-    const {cities, loading} = this.state;
+    const {loading} = this.state;
+    const {filteredCities} = this.state.cities.filter(
+      (city) => {
+        return  city.name.indexOf(this.state.filterCities) !== -1;
+      }
+    );
     if (loading) {
-      return( <Container>Loading...</Container>)
+      return( <Container>Loading cities...</Container>)
     } 
+
     return (
       <Container style ={containerStyle}>
-        {cities.map(city => {
+        <div>
+          <h4>Explore cities of the world:</h4>
+          <InputGroup className="mb-3">
+            <FormControl placeholder="Type a city or country..."
+              aria-describedby="basic-addon2" value={this.filterCities} onChange={ this.handleChange } />
+            <InputGroup.Append>
+              <Button variant="outline-secondary">Search</Button>
+            </InputGroup.Append>
+          </InputGroup>
+        </div> 
+        {filteredCities.map((city) => {
           return(
-            <Card key={city._id} style={{ width: '18rem' }}>
+            <Card key={city._id} style={{ width: '20rem' }}>
               <Card.Img variant="top" src={city.img} alt={`${city.name}, ${city.country}`} />
               <Card.Body>
                 <Card.Title>{city.name}, {city.country}</Card.Title>
                 <Card.Text>
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum cumque eum ex aliquam, beatae esse temporibus qui. Quam, magnam corporis? Fuga at reprehenderit reiciendis maiores et quisquam quasi molestiae neque.
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum cumque eum ex aliquam, beatae esse
+                  temporibus qui. Quam, magnam corporis? Fuga at reprehenderit reiciendis maiores et quisquam quasi
+                  molestiae neque.
                 </Card.Text>
               </Card.Body>
-            </Card>
+            </Card>  
           ) 
         })}
       </Container>   
