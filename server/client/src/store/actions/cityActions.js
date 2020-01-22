@@ -1,14 +1,13 @@
 import fetch from 'cross-fetch';
 import {GET_CITIES} from './actionTypes'
 
-export function getCities(cities) {
+export function getCities() {
   return async dispatch => {
     return await fetch('http://localhost:5000/cities/all', {
       method: "GET",
       headers: {
         'content-type': 'application/json',
-      },
-      body: JSON.stringify(cities)
+      }
     })
       .then(response => response.json())
       .then(data => 

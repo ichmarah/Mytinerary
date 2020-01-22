@@ -6,7 +6,7 @@ import {
 import Filter from './Filter';
 import { connect } from "react-redux";
 import { getCities } from '../store/actions/cityActions';
-// import * as citiesActions from '../store/actions/cityActions';
+// import * as cityActions from '../store/actions/cityActions';
 
 
 
@@ -49,8 +49,9 @@ class Cities extends Component {
   //     .catch(error => console.error(error))
   // }
 
-  componentDidMount() {
-    this.props.getCities()
+  async componentDidMount() {
+    await this.props.getCities()
+    this.filterCities(this.props.cities)
   }
 
   filterCities = (filteredCities) => {
@@ -60,10 +61,12 @@ class Cities extends Component {
   }
 
   render() {
-    const {loading} = this.props;
+    const {loading, cities} = this.props;
+    console.log(cities)
     if (loading) {
       return( <Container>Loading cities...</Container>)
     } 
+
     return (
       <Container style ={containerStyle}>
         <Filter onFilterCities={this.filterCities} cities={this.props.cities}/>
@@ -87,12 +90,19 @@ class Cities extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  cities: state.cities
-})
+const mapStateToProps = state => {
+  return {
+    cities: state.cities.cities,
+    loading: state.cities.loading,
+    filteredCities: state.cities.filteredCities
+  }
+  
+}
 
-const mapDispatchToProps = dispatch => {
-  type: dispatch(getCities())
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getCities: () => dispatch(getCities())
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cities);
