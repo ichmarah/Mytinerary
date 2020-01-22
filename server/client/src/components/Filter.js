@@ -7,23 +7,15 @@ import {
 
 class Filter extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
+ state = {
       filterCities: ""          
-    }
   }
+  
 
-  handleChange = (ev) => {
+  handleChange = (event) => {
     // console.log(this.props)
-    let filteredCities = this.props.cities.filter(city => city.name.toLowerCase().indexOf(ev.target.value) !== -1);
+    let filteredCities = this.props.cities.filter(city => city.name.toLowerCase().match('^' + event.target.value.toLowerCase()));
     this.props.onFilterCities(filteredCities);
-    // this.setState({
-    //   filterCities: event.target.value 
-    // })
-    // this.props.onChange(event.target.value)
-
-
   };
 
 
@@ -33,7 +25,7 @@ class Filter extends Component {
         <h4>Explore cities of the world:</h4>
         <InputGroup className="mb-3">
           <FormControl placeholder="Type a city or country..."
-            aria-describedby="basic-addon2" value={ this.state.filerCities } onChange={ this.handleChange } />
+            aria-describedby="basic-addon2" value={ this.filerCities } onChange={ this.handleChange } />
           <InputGroup.Append>
             <Button variant="outline-secondary">Search</Button>
           </InputGroup.Append>

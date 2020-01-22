@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import {
   Card,
   Container, 
-  // InputGroup,
-  // FormControl, 
-  // Button
  } from 'react-bootstrap';
-  import Filter from './Filter';
+import Filter from './Filter';
+import { connect } from "react-redux";
+import { getCities } from '../store/actions/cityActions';
+// import * as citiesActions from '../store/actions/cityActions';
+
+
+
 
 //inline component styling:
 //<Container style ={containerStyle}></Container>
@@ -15,38 +18,40 @@ import {
 }
 
 class Cities extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      cities: [],          
-      loading: true,
-      filteredCities: []
-    }
+  state = {
+    cities: [],          
+    loading: true,
+    filteredCities: []
   }
 
-  async componentDidMount() {
-    await fetch('/cities/all', {
-      method: "GET"
-    })
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          cities: data,
-          loading: false,
-          filteredCities: data
-        })
-
-        console.log(data);
-        
-      })
-      .catch(error => console.log(error))
-  }
-
-  // handleChange = (event) => {
-  //   this.setState({
-  //     filterCities: event.target.value
-  //   })
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     cities: [],          
+  //     loading: true,
+  //     filteredCities: []
+  //   }
   // }
+
+  // async componentDidMount() {
+  //   await fetch('/cities/all', {
+  //     method: "GET"
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       this.setState({
+  //         cities: data,
+  //         loading: false,
+  //         filteredCities: data
+  //       })
+  //       console.log(data);
+  //     })
+  //     .catch(error => console.error(error))
+  // }
+
+  componentDidMount() {
+    this.props.getCities()
+  }
 
   filterCities = (filteredCities) => {
     this.setState({
@@ -55,22 +60,13 @@ class Cities extends Component {
   }
 
   render() {
-    const {loading} = this.state;
-    // const filteredCities = cities.filter(
-    //   (city) => {
-    //     return  city.name.indexOf(this.props.filterCities) !== -1;
-    //   });
+    const {loading} = this.props;
     if (loading) {
       return( <Container>Loading cities...</Container>)
     } 
-
-    
-
     return (
       <Container style ={containerStyle}>
-       
-        <Filter onFilterCities={this.filterCities} cities={this.state.cities}/>
-        
+        <Filter onFilterCities={this.filterCities} cities={this.props.cities}/>
         {this.state.filteredCities.map((city) => {
           return(
             <Card key={city._id} style={{ width: '20rem' }}>
@@ -91,4 +87,12 @@ class Cities extends Component {
   }
 }
 
-export default Cities;
+const mapStateToProps = state => ({
+  cities: state.cities
+})
+
+const mapDispatchToProps = dispatch => {
+  type: dispatch(getCities())
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cities);
