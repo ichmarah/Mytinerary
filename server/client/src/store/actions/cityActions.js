@@ -6,7 +6,7 @@ export function getCities() {
     return await fetch('http://localhost:5000/cities/all', {
       method: "GET",
       headers: {
-        'content-type': 'application/json',
+        'content-type': 'application/json'
       }
     })
       .then(response => response.json())

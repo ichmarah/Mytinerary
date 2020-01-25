@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
-import {
-  Card,
-  Container, 
- } from 'react-bootstrap';
+import { Card, Container } from 'react-bootstrap';
 import Filter from './Filter';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import { getCities } from '../store/actions/cityActions';
-// import * as cityActions from '../store/actions/cityActions';
 
-
-
-
-//inline component styling:
-//<Container style ={containerStyle}></Container>
- const containerStyle = {
+/*
+inline component styling:
+<Container style ={containerStyle}></Container>
+*/
+const containerStyle = {
   'color': 'red'
 }
 
@@ -24,36 +19,43 @@ class Cities extends Component {
     filteredCities: []
   }
 
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     cities: [],          
-  //     loading: true,
-  //     filteredCities: []
-  //   }
-  // }
+/* When Redux is not used:
+  constructor(props) {
+    super(props);
+    this.state = {
+      cities: [],          
+      loading: true,
+      filteredCities: []
+    }
+  }
+ async componentDidMount() {
+    await fetch('/cities/all', {
+      method: "GET"
+    })
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          cities: data,
+          loading: false,
+          filteredCities: data
+        })
+        console.log(data);
+      })
+      .catch(error => console.error(error))
+  }
+  */
+ 
 
-  // async componentDidMount() {
-  //   await fetch('/cities/all', {
-  //     method: "GET"
-  //   })
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       this.setState({
-  //         cities: data,
-  //         loading: false,
-  //         filteredCities: data
-  //       })
-  //       console.log(data);
-  //     })
-  //     .catch(error => console.error(error))
-  // }
-
+  /*
+  Get cities data, then set data as part of the onFilterCities props in render(). 
+  This props will go to the Filter.js. Filter.js returns filteredCities.
+  */
   async componentDidMount() {
     await this.props.getCities()
     this.filterCities(this.props.cities)
   }
 
+  //This data comes from FIlter.js
   filterCities = (filteredCities) => {
     this.setState({
       filteredCities: filteredCities
@@ -96,7 +98,6 @@ const mapStateToProps = state => {
     loading: state.cities.loading,
     filteredCities: state.cities.filteredCities
   }
-  
 }
 
 const mapDispatchToProps = (dispatch) => {
