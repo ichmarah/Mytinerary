@@ -28,7 +28,7 @@ router.post('/', (req, res) => {
 });
 
 // get one city from the database. findOne() is a Mongoose method.
-router.get('/:name', (req, res) => {
+router.get('/:city', (req, res) => {
   let cityRequested = req.params.name;
   cityModel.findOne({
       name: cityRequested
