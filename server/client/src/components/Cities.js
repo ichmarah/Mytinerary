@@ -78,11 +78,6 @@ class Cities extends Component {
               <Card.Img variant="top" src={city.img} alt={`${city.name}, ${city.country}`} />
               <Card.Body>
                 <Card.Title>{city.name}, {city.country}</Card.Title>
-                <Card.Text>
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cum cumque eum ex aliquam, beatae esse
-                  temporibus qui. Quam, magnam corporis? Fuga at reprehenderit reiciendis maiores et quisquam quasi
-                  molestiae neque.
-                </Card.Text>
               </Card.Body>
             </Card>  
           ) 
