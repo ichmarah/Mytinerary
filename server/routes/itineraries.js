@@ -1,17 +1,15 @@
 const express = require('express');
-const router = express.Router();
+const itineraries = express.Router();
 const itineraryModel = require('../model/itineraryModel')
 
 // get one city from the database to show its itinerary/itineraries. findOne() is a Mongoose method.
-router.get('/:city', (req, res) => {
-  let cityRequested = req.params.name;
-  itineraryModel.find({
-      name: cityRequested
-    })
-    .then(city => {
-      res.send(city)
+itineraries.get('/:name', (req, res) => { // works in Postman!
+  // console.log(req.params.name)
+  itineraryModel.find({name: req.params.name})
+    .then(names => {
+      res.send(names)
     })
     .catch(err => console.log(err));
   });
 
-module.exports = router;
+module.exports = itineraries;

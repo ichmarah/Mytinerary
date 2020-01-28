@@ -11,7 +11,7 @@ const itinerarySchema = new mongoose.Schema({
         required: true
     },
     activity: {
-        type: [String], // Gets to be an array because some cities have more than one activity!
+        type: String, // Gets to be an array because some cities have more than one activity!
     },
     img: {
         type: String

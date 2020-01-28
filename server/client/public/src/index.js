@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './node_modules/bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -10,14 +10,12 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import rootReducer from './store/reducers/rootReducer';
 import { getCities } from './store/actions/cityActions';
-import { getItineraries } from './store/actions/itineraryActions'
 // import * as citiesActions from './store/actions/cityActions';
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)) );
 // const store = createStore( composeWithDevTools(applyMiddleware(thunk)) );
 
 store.dispatch(getCities())
-store.dispatch(getItineraries())
 
 ReactDOM.render(
   <Provider store={store}>

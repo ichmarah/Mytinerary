@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Card, Container } from 'react-bootstrap';
 import Filter from './Filter';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { getCities } from '../store/actions/cityActions';
 
 /*
@@ -77,7 +78,10 @@ class Cities extends Component {
             <Card key={city._id} style={{ width: '20rem' }}>
               <Card.Img variant="top" src={city.img} alt={`${city.name}, ${city.country}`} />
               <Card.Body>
-                <Card.Title>{city.name}, {city.country}</Card.Title>
+                <Card.Title>
+
+                  <Link to={ `/itineraries/${city.name}`}>{city.name}, {city.country}</Link>
+                </Card.Title>
               </Card.Body>
             </Card>  
           ) 

@@ -5,6 +5,7 @@ import Landing from './components/Landing';
 import Login from './components/Login';
 import Create from './components/Create';
 import Cities from './components/Cities';
+import Itineraries from './components/Itineraries';
 
 
 class App extends Component {
@@ -15,6 +16,7 @@ class App extends Component {
           <Switch>
             <Route exact path='/' component={ Landing } />
             <Route path='/cities' component={ Cities } />
+            <Route path='/itineraries/:name' component={ Itineraries } />
             <Route path='/login' component={ Login } />
             <Route path='/create' component={ Create } />
           </Switch>

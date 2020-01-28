@@ -4,7 +4,7 @@ import {
   Media,
   Container
  } from 'react-bootstrap';
-import '../assets/css/style.css'
+
 import CircleRight2 from '../assets/images/circled-right-2.png'
 import HomeIcon from '../assets/images/homeIcon.png';
 import Logo from '../assets/images/MYtineraryLogo.png'
