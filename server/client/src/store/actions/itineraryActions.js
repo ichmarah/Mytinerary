@@ -3,7 +3,6 @@ import { GET_ITINERARIES } from './actionTypes';
 
 // When fetching itineraries, there will be no option for filtering.
 export function getItineraries(name) {
-  console.log(name)
   return async dispatch => {
     return await fetch(`/itineraries/${name}`, {
       method: "GET",
@@ -20,9 +19,7 @@ export function getItineraries(name) {
         itineraries: data,
         loading: true
       })
-      
-    } //Data is not logged in console at all. Postman test: itineraries of a city are being fetched.
-    )
+    })
     .catch(error => console.error(error))
   }
 }

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import Landing from './components/Landing';
 import Login from './components/Login';
-import Create from './components/Create';
+import CreateAccount from './components/CreateAccount';
 import Cities from './components/Cities';
 import Itineraries from './components/Itineraries';
 
@@ -18,7 +18,7 @@ class App extends Component {
             <Route path='/cities' component={ Cities } />
             <Route path='/itineraries/:name' component={ Itineraries } />
             <Route path='/login' component={ Login } />
-            <Route path='/create' component={ Create } />
+            <Route path='/create_account' component={ CreateAccount } />
           </Switch>
         </React.Fragment>
       </BrowserRouter>

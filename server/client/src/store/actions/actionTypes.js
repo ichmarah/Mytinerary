@@ -3,3 +3,6 @@ export const GET_CITIES = 'GET_CITIES';
 
 // ITINERARY
 export const GET_ITINERARIES = 'GET_ITINERARIES';
+
+// CREATE_ACCOUNT
+// export const GET_USER = 'GET_USER';

@@ -7,7 +7,7 @@ import {
 
 import CircleRight2 from '../assets/images/circled-right-2.png'
 import HomeIcon from '../assets/images/homeIcon.png';
-import Logo from '../assets/images/MYtineraryLogo.png'
+import Logo from '../assets/images/MYtineraryLogo.png';
 
 
 class Landing extends Component {
@@ -25,7 +25,7 @@ class Landing extends Component {
                   cities.</p>
                 <p>Start browsing</p>
                 <Media>
-                  <Link to="/cities">
+                  <Link to="/cities/all">
                     <img className="browse-btn" src={ CircleRight2 } alt="Browse cities button" fluid="true" />
                   </Link>
                   
@@ -36,8 +36,8 @@ class Landing extends Component {
               <div className="text-center build-itinerary ">
                 <p>Want to build your own MYtinerary?</p>
                 <div>
-                  <Link to='/Login'>Log in</Link>
-                  <Link to='/Create'>Create Account</Link>
+                  <Link to='/login'>Log in</Link>
+                  <Link to='/create_account'>Create Account</Link>
                 </div>
               </div>
 

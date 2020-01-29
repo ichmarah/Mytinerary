@@ -11,13 +11,15 @@ import thunk from 'redux-thunk';
 import rootReducer from './store/reducers/rootReducer';
 import { getCities } from './store/actions/cityActions';
 import { getItineraries } from './store/actions/itineraryActions'
+// import { getUser } from './store/actions/userActions'
 // import * as citiesActions from './store/actions/cityActions';
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)) );
 // const store = createStore( composeWithDevTools(applyMiddleware(thunk)) );
 
-store.dispatch(getCities())
-store.dispatch(getItineraries())
+store.dispatch(getCities());
+store.dispatch(getItineraries());
+// store.dispatch(getUser());
 
 ReactDOM.render(
   <Provider store={store}>

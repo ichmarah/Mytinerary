@@ -12,6 +12,7 @@ app.use(cors());
 
 app.use('/cities', require('./routes/cities'));
 app.use('/itineraries', require('./routes/itineraries'));
+// app.use('/user', require('./routes/user'))
 
 mongoose.connect(db, { useNewUrlParser: true, useCreateIndex: true })
     .then(() => console.log('Connection to Mongo DB established'))

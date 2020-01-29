@@ -12,44 +12,22 @@ import { connect } from 'react-redux';
 inline component styling:
 <Container style ={containerStyle}></Container>
 */
-// const containerStyle = {
-//   'color': 'red'
-// }
+const containerStyle = {
+  'color': 'red',
+  'width': '20rem'
+}
 
 class Itinerary extends Component {
-  constructor(props) {
-    super(props)
-      // this.state = {
-      //   itineraries: [
-      //     {
-      //       name: []
-      //     }
-      //   ],
-      //   loading: true
-      // }
+    state = {
+      itineraries: '',
+      loading: true
+    }
 
-  }
 
 componentDidMount() {
   const name = this.props.match.params.name;
   console.log()
-  // If city.name from Cities.js in <Link> matches itineraries.name, only show itinerraies with that matching name
- this.props.getItineraries(name[0].toUpperCase() + name.substr(1))
-  // .filter(itinerary => {
-  //   return name === itinerary.name 
-  // })
-  // this.setState({
-  //   itineraries: [{
-  //     name: name
-  //   }],
-  //   loading: this.props.loading
-  // })
-  // this.setState({
-  //   itineraries: this.props.itineraries,
-  //   loading: this.props.loading
-  // })
-
-  
+  this.props.getItineraries(name[0].toUpperCase() + name.substr(1)) //Make first letter of the name a small letter
 }
 
   render() {
@@ -64,11 +42,11 @@ componentDidMount() {
    
         {this.props.itineraries.map(itinerary => {
           return(
-            <Card key={ itinerary._id } style={{ width: '20rem' }}>
+            <Card key={ itinerary._id } style={containerStyle}>
               <Card.Img variant="top" src={ itinerary.img } alt={ `${itinerary.name}, ${itinerary.country}` } />
               <Card.Body>
-                <h4>{ itinerary.name } ({ itinerary.country }) Itinerary</h4>
                 <Card.Title>{ itinerary.activity }</Card.Title>
+                <Card.Text>Price: { itinerary.price }, Rating { itinerary.rating } out of 5</Card.Text>
                 <Card.Text>{ itinerary.summary }</Card.Text>
               </Card.Body>
             </Card>
@@ -77,8 +55,6 @@ componentDidMount() {
       </Container>
     )
   }
-
-
 }
 
 const mapStateToProps = state => {
