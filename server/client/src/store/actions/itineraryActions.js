@@ -3,20 +3,27 @@ import { GET_ITINERARIES } from './actionTypes';
 
 // When fetching itineraries, there will be no option for filtering.
 export function getItineraries(name) {
+  console.log(name)
   return async dispatch => {
-    return await fetch(`http://localhost:5000/itineraries/${name}`, {
+    return await fetch(`/itineraries/${name}`, {
       method: "GET",
-      headers: {'content-type': 'application/json'}
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     })
-    .then(response => response.json)
-    .then(data => 
-      (dispatch({
+    .then(response => {
+      console.log(response)
+      return response.json()
+    })
+    .then(data => {
+      console.log('Itineraries fetched in itineraryActions: ', data)
+      dispatch({
         type: GET_ITINERARIES,
         itineraries: data,
         loading: true
-      }),
-      console.log('Itineraries fetched in itineraryActions: ', data)) //Data is not logged in console at all. Postman test: itineraries of a city are being fetched.
+      })
+      
+    } //Data is not logged in console at all. Postman test: itineraries of a city are being fetched.
     )
     .catch(error => console.error(error))
   }
 }
+

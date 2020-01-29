@@ -3,7 +3,7 @@ import {GET_CITIES} from './actionTypes'
 
 export function getCities() {
   return async dispatch => {
-    return await fetch('http://localhost:5000/cities/all', {
+    return await fetch('/cities/all', {
       method: "GET",
       headers: {'content-type': 'application/json'}
     })

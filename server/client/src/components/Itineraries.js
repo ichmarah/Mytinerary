@@ -19,36 +19,37 @@ inline component styling:
 class Itinerary extends Component {
   constructor(props) {
     super(props)
-      this.state = {
-        itineraries: [
-          {
-            name: []
-          }
-        ],
-        loading: true
-      }
+      // this.state = {
+      //   itineraries: [
+      //     {
+      //       name: []
+      //     }
+      //   ],
+      //   loading: true
+      // }
 
   }
 
-async componentDidMount() {
+componentDidMount() {
   const name = this.props.match.params.name;
-  console.log(name)
- await this.props.getItineraries(name)
- .filter(itinerary => {
-    return name === itinerary.name 
-  })
-  this.setState({
-    itineraries: [{
-      name: name
-    }],
-    loading: this.props.loading
-  })
+  console.log()
+  // If city.name from Cities.js in <Link> matches itineraries.name, only show itinerraies with that matching name
+ this.props.getItineraries(name[0].toUpperCase() + name.substr(1))
+  // .filter(itinerary => {
+  //   return name === itinerary.name 
+  // })
+  // this.setState({
+  //   itineraries: [{
+  //     name: name
+  //   }],
+  //   loading: this.props.loading
+  // })
   // this.setState({
   //   itineraries: this.props.itineraries,
   //   loading: this.props.loading
   // })
 
-  // If city.name from Cities.js in <Link> matches itineraries.name, only show itinerraies with that matching name
+  
 }
 
   render() {
@@ -60,7 +61,7 @@ async componentDidMount() {
     return (
       <Container>
         <h4>Itinerary</h4>
-        {/* {itineraries} */}
+   
         {this.props.itineraries.map(itinerary => {
           return(
             <Card key={ itinerary._id } style={{ width: '20rem' }}>
