@@ -24,17 +24,17 @@ function validUser(user) {
 
 users.post('/register', (req, res, next) => {
   console.log(req.body);
-  res.json({
-    message: '✅'
-  });
-  // if (validUser(req.body)) {
-  //   res.json({
-  //     message: '✅'
-  //   });
-  // } else {
-  //   // send an error
-  //   next(new Error('Invalid user')) 
-  // }
+  // res.json({
+  //   message: '✅'
+  // });
+  if (validUser(req.body)) {
+    res.json({
+      message: '✅'
+    });
+  } else {
+    // send an error
+    next(new Error('Invalid user')) 
+  }
 });
 
 
