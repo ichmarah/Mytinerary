@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   InputGroup,
   FormControl, 
-  Button
+ 
  } from 'react-bootstrap';
 
 class Filter extends Component {
@@ -24,11 +24,8 @@ class Filter extends Component {
       <div>
         <h4>Explore cities of the world:</h4>
         <InputGroup className="mb-3">
-          <FormControl placeholder="Type a city or country..."
+          <FormControl placeholder="Search a city..."
             aria-describedby="basic-addon2" value={ this.filerCities } onChange={ this.handleChange } />
-          <InputGroup.Append>
-            <Button variant="outline-secondary">Search</Button>
-          </InputGroup.Append>
         </InputGroup>
       </div> 
     )

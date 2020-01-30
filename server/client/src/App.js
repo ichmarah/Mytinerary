@@ -18,7 +18,7 @@ class App extends Component {
             <Route path='/cities' component={ Cities } />
             <Route path='/itineraries/:name' component={ Itineraries } />
             <Route path='/login' component={ Login } />
-            <Route path='/create_account' component={ CreateAccount } />
+            {/* <Route path='/users' component={ CreateAccount } /> */}
           </Switch>
         </React.Fragment>
       </BrowserRouter>
