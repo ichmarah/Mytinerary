@@ -14,43 +14,48 @@ users.get('/all', (req, res) => {
     .catch(err => console.error(err));
 });
 
-// Check if email and password are valid: must be a string, and when trimmed from surrounding whitespaces, it should not consist of spaces. Password should consist of 6 or more characters.
-function validUser(user) {
-  const validEmail = typeof user.email === 'string' && user.email.trim() !== '';
-  const validPassword = typeof user.password === 'string' && user.password.trim() !== '' && user.password.trim().length >= 6;
-  // if both are true/valid, return
-  return validEmail && validPassword;
-}
 
 users.post('/register', (req, res, next) => {
-  console.log(req.body);
-  // res.json({
-  //   message: '✅'
-  // });
-  if (validUser(req.body)) {
-    res.json({
-      message: '✅'
-    });
-  } else {
-    // send an error
-    next(new Error('Invalid user')) 
+  // Declare requisit for valid name, email, password
+  const validName = typeof req.body.name === 'string'
+  const validEmail = typeof req.body.email === 'string' && req.body.email.trim() !== '';
+  const validPassword = typeof req.body.password === 'string' && req.body.password.trim() !== '' && req.body.password.length > 6; 
+  console.log( validEmail, validPassword);
+
+  //Check if name, email, password are valid
+  if (!validName) {
+    return res.status(400).json({ message: "Please enter a valid name" });
+  } else if (!validEmail) {
+    return res.status(400).json({ message: "Please enter a valid email address" });
+  } else if (!validPassword) {
+    res.status(400).json({ message: "Password must be longer than 6 characters" });
+  } else if (!req.body.email || !req.body.password) {
+    res.status(400).json({ msg: "Please enter all fields" });
   }
+
+  //Check if email is already registered
+  userModel.findOne({ email: req.body.email  })
+    .then(user => {
+      if (user) { return res.status(400).json({ message: "This email already exists" })
+      } else {     // If email not found, user can register. newUser is created based on the userModel and saved
+        const newUser = new userModel({
+          name: req.body.name,
+          email: req.body.email,
+          password: req.body.password,
+          // avatar: req.body.avatar
+        })
+        newUser.save()
+          .then(user => {res.send(user)
+          })
+      }
+    })
+    .catch(err => {
+      res.status(500).send("Server error")})
 });
 
 
 module.exports = users;
 
 
-//   const newUser = new userModel({
-//       name: req.body.name,
-//       email: req.body.email,
-//       password: req.body.password,
-//       avatar: req.body.avatar
-//   })
-//   newUser.save()
-//     .then(user => {res.send(user)
-//     })
-//     .catch(err => {
-//     res.status(500).send("Server error")}) 
-// });
+
 
