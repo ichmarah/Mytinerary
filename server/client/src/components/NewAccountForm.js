@@ -11,7 +11,8 @@ class NewAccountForm extends Component {
     name: '',
     email: '',
     password: '',
-    remember: false
+    remember: false,
+    message: null
   }
 
   handleChange = (event) => {

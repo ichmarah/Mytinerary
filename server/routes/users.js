@@ -1,9 +1,8 @@
 const express = require('express');
 const users = express.Router();
 const userModel = require('../model/userModel')
-
-// const bcrypt = require('bcrypt');
-// const saltRounds = 10;  
+const bcrypt = require('bcrypt');
+const saltRounds = 10;  
 
 //get all cities from database. find() is a Mongoose method.
 users.get('/all', (req, res) => {
@@ -15,9 +14,9 @@ users.get('/all', (req, res) => {
 });
 
 
-users.post('/register', (req, res, next) => {
+users.post('/register', (req, res) => {
   // Declare requisit for valid name, email, password
-  const validName = typeof req.body.name === 'string'
+  const validName = typeof req.body.name === 'string' && req.body.name.trim() !== ''
   const validEmail = typeof req.body.email === 'string' && req.body.email.trim() !== '';
   const validPassword = typeof req.body.password === 'string' && req.body.password.trim() !== '' && req.body.password.length > 6; 
   console.log( validEmail, validPassword);
@@ -38,15 +37,19 @@ users.post('/register', (req, res, next) => {
     .then(user => {
       if (user) { return res.status(400).json({ message: "This email already exists" })
       } else {     // If email not found, user can register. newUser is created based on the userModel and saved
-        const newUser = new userModel({
-          name: req.body.name,
-          email: req.body.email,
-          password: req.body.password,
-          // avatar: req.body.avatar
-        })
-        newUser.save()
-          .then(user => {res.send(user)
+        bcrypt.hash(req.body.password, saltRounds) //Generate salt and hash
+        .then( hash => {
+          const newUser = new userModel({
+            name: req.body.name,
+            email: req.body.email,
+            password: hash
+            // avatar: req.body.avatar
           })
+          newUser.save()
+            .then(user => {res.send(user)
+          })
+        })
+        
       }
     })
     .catch(err => {
