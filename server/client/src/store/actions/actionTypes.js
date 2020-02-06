@@ -5,4 +5,4 @@ export const GET_CITIES = 'GET_CITIES';
 export const GET_ITINERARIES = 'GET_ITINERARIES';
 
 // CREATE_ACCOUNT
-// export const GET_USER = 'GET_USER';
+export const CREATE_ACCOUNT = 'CREATE ACCOUNT';

@@ -37,7 +37,7 @@ class Landing extends Component {
                 <p>Want to build your own MYtinerary?</p>
                 <div>
                   <Link to='/login'>Log in</Link>
-                  <Link to='/create_account'>Create Account</Link>
+                  <Link to='/users/'>Create Account</Link>
                 </div>
               </div>
 

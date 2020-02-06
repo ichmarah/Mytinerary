@@ -14,7 +14,7 @@ app.use('/cities', require('./routes/cities'));
 app.use('/itineraries', require('./routes/itineraries'));
 app.use('/users', require('./routes/users'));
 
-mongoose.connect(db, { useNewUrlParser: true, useCreateIndex: true })
+mongoose.connect(db, { useNewUrlParser: true, useCreateIndex: true, dbName: "client" })
     .then(() => console.log('Connection to Mongo DB established'))
     .catch(err => console.error(err));
 

@@ -1,17 +1,18 @@
 import fetch from 'cross-fetch';
-import { GET_USER } from './actionTypes';
+import { CREATE_ACCOUNT } from './actionTypes';
 
-export function getUser() {
+export function createUser() {
   return async dispatch => {
-    return await fetch('/all', {
-      method: "GET",
+    return await fetch('/users/register', {
+      method: "POST",
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     })
     .then(data => 
       (dispatch({
-        type: GET_USER,
+        type: CREATE_ACCOUNT,
         users: data,
-        loading: false
+        // checked: false,
+        msg: null
       }))
     )
     .catch(error => console.error(error))
