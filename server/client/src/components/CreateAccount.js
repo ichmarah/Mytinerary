@@ -4,7 +4,6 @@ import {
   Container,
   Media} from 'react-bootstrap';
 import NewAccountForm from './NewAccountForm';
-// import { connect } from 'react-redux';
 import Image from '../assets/images/avatar.png';
 import Avatar from 'react-avatar'; // Installed Avatar for React via npm
 

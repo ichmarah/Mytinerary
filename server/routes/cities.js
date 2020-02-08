@@ -13,19 +13,19 @@ cities.get('/all', (req, res) => {
 
 
 // post a city from client side
-cities.post('/', (req, res) => {
-  const newCity = new cityModel({
-    name: req.body.name,
-    country: req.body.country
-  })
-  newCity.save()
-    .then(city => {
-      res.send(city)
-    })
-    .catch(err => {
-      res.status(500).send("Server error")
-    })
-});
+// cities.post('/', (req, res) => {
+//   const newCity = new cityModel({
+//     name: req.body.name,
+//     country: req.body.country
+//   })
+//   newCity.save()
+//     .then(city => {
+//       res.send(city)
+//     })
+//     .catch(err => {
+//       res.status(500).send("Server error")
+//     })
+// });
 
 // get one city from the database. findOne() is a Mongoose method.
 // router.get('/:city', (req, res) => {

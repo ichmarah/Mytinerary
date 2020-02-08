@@ -14,19 +14,23 @@ const emailRegex = RegExp(
 
 const passwordRegex = RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@#!%*?&])[A-Za-z\d$@$!%*?&]{8,32}/); 
 
-const formValid = formErrors => {
+const formValid = ({formErrors, ...rest}) => {
   let valid = true;
 
+  // Validate form errors being empty
   Object.values(formErrors).forEach(value => {
     value.length > 0 && (valid = false);
   });
+  // Iterate over remaining values that are not part of formErrors. Prevents registering without any values.
+  Object.values(rest).forEach(val => {
+    val === null && (valid = false)
+  })
   return valid;
 }
 
 class NewAccountForm extends Component {
   constructor(props) {
     super(props);
-    
     this.state = {
       name: null,
       email: null,
@@ -38,23 +42,10 @@ class NewAccountForm extends Component {
         password: ""
       }
     }
+    console.log(this.state);
   }
 
-  handleSubmit = event => {
-    event.preventDefault();
-
-    if (formValid(this.state.formErrors)) {
-      console.log(`
-        -- SUBMITTING --
-        Username: ${`this.state.name`}
-        Email: ${`this.state.email`}
-        Password: ${`this.state.password`}
-      `)
-    } else {
-      console.error('FORM INVALID - DISPLAY ERROR MESSAGE');
-    }
-  }
-
+  // Validate input and set this.state (either with errorForms or correct user's input)
   handleChange = event => {
     event.preventDefault();
 
@@ -64,68 +55,44 @@ class NewAccountForm extends Component {
 
     switch (name) {
       case 'name':
-        formErrors.name = 
-          value.length < 2 
-          ? 'Minimum of 2 characters required'
-          : ''
+        formErrors.name = value.length < 2 ? 'Minimum of 2 characters required' : ''
         break;
         case 'email':
-        formErrors.email = 
-          emailRegex.test(value) 
-          ? ''
-          : 'Invalid email address'
+        formErrors.email = emailRegex.test(value) ? '' : 'Invalid email address'
         break;
-        case 'password':
-        formErrors.password = 
-        passwordRegex.test(value) 
-        ? ''
-        : 'Minimum 8, must contain at least: 1 Uppercase Alphabet, at least 1 Lowercase Alphabet, 1 Number and 1 Special Character'
+        case 'password': formErrors.password = passwordRegex.test(value) ? '': 'Minimum 8, must contain at least: 1 Uppercase Alphabet, at least 1 Lowercase Alphabet, 1 Number and 1 Special Character'
         break;
-    
       default:
         break;
     }
 
     this.setState({formErrors, [name]: value}, () => console.log(this.state))
   }
-
   
-  
+  // If the validation is true, 
+  handleSubmit = event => {
+    event.preventDefault();
 
-  // If message coming from express-validator is not equal to null, set the State to msg: error.msg
-  // async componentDidMount() {
-  //   const { msg } = this.props;
-  //   const { error } = { msg };
-  //   if (msg !== null) {
-  //     this.setState ({ msg: error })
-  //   } 
-  //   else { this.setState ({ msg: null })}
-  // }
+    if (formValid(this.state)) {
+      const { name, email, password } = this.state;
+      const newUser = { name, email, password }
 
+      this.props.createUser(newUser)
+      // Submit to MongoDB??
 
-  // handleChange = (event) => {
-  //   event.preventDefault();
-  //   const { users, remember } = this.state; //checked is removed
-  //   this.setState = {
-  //     [event.target.name]: event.target.value,
-  //     // checked: event.target.checked
-  //   }
-  //   const newUser = { users, remember } //checked is removed
-  //   createUser(newUser);
-  //   console.log('After clicking register', newUser)
-    
-  // }
-
-  // handleSubmit = ( event) => {
-  //   event.preventDefault();
-  //   const { users, remember } = this.state; //checked is removed
-  //   const newUser = { users, remember } //checked is removed
-  //   createUser(newUser);
-  //   console.log('After clicking register', newUser)
-  // }
+      console.log(`
+        -- SUBMITTING --
+        Username: ${name}
+        Email: ${email}
+        Password: ${password}
+      `)
+    } else {
+      console.error('All fields are required');
+    }
+  }
 
   render() {
-    // const { name, email, password } = this.state;
+    const { formErrors } = this.state;
     
     return (
       <Container>
@@ -136,6 +103,9 @@ class NewAccountForm extends Component {
             </Form.Label>
             <Col sm={10}>
               <Form.Control name='name' type='text' placeholder="Name" onChange={this.handleChange}/>
+              {formErrors.name.length > 0 &&(
+                <span className="errorMessage">{formErrors.name}</span>
+              )}
             </Col>
           </Form.Group>
 
@@ -145,6 +115,9 @@ class NewAccountForm extends Component {
             </Form.Label>
             <Col sm={10}>
               <Form.Control name='email' type='email' placeholder='Email' onChange={this.handleChange}/>
+              {formErrors.email.length > 0 &&(
+                <span className="errorMessage">{formErrors.email}</span>
+              )}
             </Col>
           </Form.Group>
 
@@ -154,6 +127,9 @@ class NewAccountForm extends Component {
             </Form.Label>
             <Col sm={10}>
             <Form.Control name='password' type='password' placeholder='Password' onChange={this.handleChange}/>
+            {formErrors.password.length > 0 &&(
+                <span className="errorMessage">{formErrors.password}</span>
+              )}
             </Col>
           </Form.Group>
 
@@ -170,15 +146,14 @@ class NewAccountForm extends Component {
 
 const mapStateToProps = state => {
   return {
-    users: state.users.users,
+    users: state.users
     // checked: state.users.checked,
-    msg: state.users.msg
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    createUser: () => dispatch(createUser())
+    createUser: (newUser) => dispatch(createUser(newUser))
   }
 }
 
