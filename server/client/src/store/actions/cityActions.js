@@ -9,13 +9,13 @@ export function getCities() {
     })
       .then(response => response.json())
       .then(data => 
-        (dispatch({
+        dispatch({
           type: GET_CITIES,
           cities: data,
           loading: true,
           filteredCities: []
-        }),
-        console.log('Cities fecthed in cityActions: ', data))
+        })
+        // console.log('Cities fecthed in cityActions: ', data))
       )
       .catch(error => console.error(error))
     } 

@@ -3,6 +3,8 @@ const users = express.Router();
 const userModel = require('../model/userModel')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const key = require('../keys');
+const jwt = require('jsonwebtoken');
 
 //get all cities from database. find() is a Mongoose method.
 users.get('/all', (req, res) => {
@@ -14,7 +16,7 @@ users.get('/all', (req, res) => {
 });
 
 users.post('/register', (req, res) => {
-  console.log('body in /register',req.body) // password provided in input form is undefined
+  // console.log('body in /register',req.body) // password provided in input form is undefined
   userModel.findOne({ email: req.body.email  })
   // console.log(req.body) //When submitting input form, req.body is emty: {}
   .then(user => {
@@ -32,6 +34,7 @@ users.post('/register', (req, res) => {
             password: hash
             // avatar: req.body.avatar
           })
+          // To save data in db
           newUser.save()
             .then(user => {res.send(user)
             })
@@ -48,80 +51,56 @@ users.post('/register', (req, res) => {
 })
 
 
-// users.post('/register', (req, res) => {
-//   console.log( 'req.body', req.body) // shows input in body
-//   userModel.findOne({ email: req.body.email })
-//   // console.log(req.body.email) // Shows undefined
-//   .then(user => {
-//     console.log(user) //shows null when email not found but Postman keeps loading. However, user IS createdin Postman!!
-//     // When trying in input form, console.log(req.body) is empty --> value is not being passed.
-//     // I downloaded my users list from MongoDB, only shows the one I imported from Ubiqum's heroku. In my download file, I see all the new users I posted on Postman! But they are not showing in MongoDB even when I refresh it.
-//     if (user == null) {
-//       bcrypt.hash(req.body.password, saltRounds, (error, hash)  => {
-//         if (!error) {
-//           const newUser = new userModel({
-//             name: req.body.name,
-//             email: req.body.email,
-//             password: hash
-//             // avatar: req.body.avatar
-//           })
-//           // console.log(newUser) // not even logged
-//           newUser.save()
-//             .then(user => {res.status(status).send(body)
-//             })
-//             .catch(error => {
-//               res.status(status).send(body, error, 'Error posting in DB')
-//             })
-//         } else {
-//           console.log('Error: ', error)
-//         }
-//     }) //Generate salt and hash
-  
-//     // if (user) { return res.render({ msg: 'This email already exists' })
-//     } else { 
-//       return res.status(400).send( 'This email already exists' )    // If email not found, user can register. newUser is created based on the userModel and saved
-//     }   
-          
-        
-      
-//     })
-//   .catch( error => console.error(error))
-      
-  
-// })
+// Login route
+users.post('/login', (req, res) => {
+// Compare password in req.body with password in DB. 
+  const { email, password } = req.body;
+  console.log('Input form filled: ', req.body)
+  if(!email || !password) {
+    return res.status(400).json({ msg: "Both fields required" });
+  } 
+
+  userModel.findOne({ email })
+    .then(user => {
+      if (!user) {
+        return res.status(400).json({ msg: "User not found" });
+      }
+      console.log('User found: ', user);
+      bcrypt.compare(req.body.password, user.password)
+        // In Postman, password provided should not be hash and salted as in DB. Need to use the unsalted/unhashed password used when registered! Only then matches: true. A token will be provided.
+        .then(matches => {
+          console.log('Password matches: ', matches)
+          if (matches) {
+            jwt.sign(
+              {id: user._id},
+              key.secretOrKey, 
+              {expiresIn: '2 days'}, // Token espires in 2 days
+              (err, token) => {
+                if (err){
+                  res.json({
+                    success: false,
+                    token: 'There was an error'
+                  });
+                } else {
+                    res.json({
+                      success: true,
+                      token: token,
+                      user: {
+                        id: user._id,
+                        name: user.name,
+                        email: user.email
+                      }
+                    })
+                }
+              }
+            )
+          }
+        })
+    })
+})
+
+
+
 
 
 module.exports = users;
-
-
-
-
-
-// users.post('/register', (req, res) => {
-//   // req.body = JSON.parse(JSON.stringify(Object.keys(req.body)))
-
-//   bcrypt.hash(req.body.password, saltRounds, function( hash) {
-//     userModel.findOne({ email: req.body.email  } )        
-//       .then((user) => {
-//         if (user) { 
-//           // console.log(user)
-//           return res.status(400).send( 'This email already exists' )
-//         } else {
-          
-//           const newUser = new userModel({
-//             name: req.body.name,
-//             email: req.body.email,
-//             password: hash
-//             // avatar: req.body.avatar
-//           })
-//           newUser.save()
-//             .then(user => {res.json('User added!')
-//             })
-//         }
-        
-//       })
-//       .catch( error => console.error(error))
-//       })
-
-// }) //Generate salt and hash
-  
