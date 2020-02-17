@@ -1,10 +1,11 @@
 const express = require('express');
 const users = express.Router();
-const userModel = require('../model/userModel')
+const userModel = require('../model/userModel');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const key = require('../keys');
 const jwt = require('jsonwebtoken');
+const passport = require("passport");
 
 //get all cities from database. find() is a Mongoose method.
 users.get('/all', (req, res) => {
@@ -71,33 +72,52 @@ users.post('/login', (req, res) => {
         .then(matches => {
           console.log('Password matches: ', matches)
           if (matches) {
-            jwt.sign(
-              {id: user._id},
-              key.secretOrKey, 
-              {expiresIn: '2 days'}, // Token espires in 2 days
-              (err, token) => {
-                if (err){
-                  res.json({
-                    success: false,
-                    token: 'There was an error'
-                  });
-                } else {
-                    res.json({
-                      success: true,
-                      token: token,
-                      user: {
-                        id: user._id,
-                        name: user.name,
-                        email: user.email
-                      }
-                    })
-                }
+            const payload = {
+              id: user._id,
+              username: user.username,
+              avatarPicture: user.avatarPicture
+            };
+            const options = {expiresIn: 1296000};
+            jwt.sign(payload, key.secretOrKey, options, (err, token) => {
+              if(err){
+                res.json({
+                  success: false,
+                  token: "There was an error"
+                });
+              }else {
+                res.json({
+                  success: true,
+                  token: token
+                });
               }
-            )
+              }
+            );
           }
         })
     })
 })
+
+//Test will check if you are logged in before sending back the information about your profile
+users.get('/test', passport.authenticate('jwt', { session: false }), (req, res) => {
+  console.log(req);
+  userModel.findOne({ _id: req.user._id })
+    .then(user => {
+      res.json(user);
+    })
+    .catch(err => res.status(404).json({ error: "User does not exist!" }, err));
+  }
+);
+
+// Google login route GET
+users.get ('/google', 
+  passport.authenticate('google', { scope: ['profile'] }
+));
+
+// Google redirect route GET
+users.get ('/google/redirect', passport.authenticate('google'), (req, res) => {
+  res.send('you reached the callback URI');
+})
+
 
 
 

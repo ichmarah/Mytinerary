@@ -36,8 +36,8 @@ class Landing extends Component {
         <div className="text-center build-itinerary ">
           <p>Want to build your own MYtinerary?</p>
           <div>
-            <Link to='/login'>Log in</Link>
-            <Link to='/users/'>Create Account</Link>
+            <Link to='/users/login'>Log in</Link>
+            <Link to='/users/register'>Create Account</Link>
           </div>
         </div>
 

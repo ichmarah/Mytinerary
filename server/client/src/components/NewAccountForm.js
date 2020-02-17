@@ -134,8 +134,8 @@ class NewAccountForm extends Component {
           </Form.Group>
 
           <Form.Group as={Row}>
-            <Col sm={{ span: 10, offset: 2 }}>
-            <Button type='submit'>Register</Button>
+            <Col className="register-login" sm={{ span: 10, offset: 2 }}>
+            <Button className="register-login-btn" type='submit'>Register</Button>
             </Col>
           </Form.Group>
         </Form>

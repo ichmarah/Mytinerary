@@ -9,11 +9,13 @@ const mongoose = require('mongoose'); // Connect MongoDB with Mongoose.
 const passport = require('passport');
 require('./passport');
 
+
 // Middlewares
 app.use(bodyParser.json()); //To parse as json data the data the user has input in body, because Express does not know how to read request body
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
 app.use(passport.initialize()); // Should be before bodyparser?
+
 
 // Routes 
 app.use('/cities', require('./routes/cities'));

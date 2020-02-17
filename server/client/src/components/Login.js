@@ -6,6 +6,7 @@ import {
   Button,
   Form,
   Media} from 'react-bootstrap';
+  import { Link } from 'react-router-dom';
   import Logo from '../assets/images/MYtineraryLogo.png';
 
 
@@ -43,12 +44,16 @@ class Login extends Component {
             </Col>
           </Form.Group>
 
-          <Form.Group as={Row}>
-            <Col sm={{ span: 10, offset: 2 }}>
-            <Button type='submit'>Register</Button>
+          <Form.Group  as={Row}>
+            <Col className="register-login" sm={{ span: 10, offset: 2 }}>
+            <Button className="register-login-btn" type='submit'>Login</Button>
             </Col>
           </Form.Group>
         </Form>
+        <div className="login-options">
+          <div className="app-login">Or login with Google:</div>
+          <Link className="google-login" to='/users/google'><Button  variant="danger">Google login</Button></Link>
+        </div>
       </Container>
     );
   }
